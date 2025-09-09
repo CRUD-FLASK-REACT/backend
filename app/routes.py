@@ -3,6 +3,21 @@ from .models import db, Task, Comment
 
 bp = Blueprint('main', __name__)
 
+@bp.route('/tasks', methods=['GET'])
+def get_tasks():
+    tasks = Task.query.all()
+    return jsonify([{"id": t.id, "title": t.title} for t in tasks]), 200
+
+@bp.route('/tasks', methods=['POST'])
+def add_task():
+    title = request.json.get('title', None)
+    if not title:
+        return jsonify({"error": "Task title is required"}), 400
+    task = Task(title=title)
+    db.session.add(task)
+    db.session.commit()
+    return jsonify({"id": task.id, "title": task.title}), 201
+
 @bp.route('/tasks/<int:task_id>/comments', methods=['GET', 'POST'])
 def comments(task_id):
     if request.method == 'GET':
@@ -33,13 +48,3 @@ def delete_task(task_id):
     db.session.delete(task)
     db.session.commit()
     return '', 204
-
-@bp.route('/tasks', methods=['POST'])
-def add_task():
-    title = request.json.get('title', None)
-    if not title:
-        return jsonify({"error": "Task title is required"}), 400
-    task = Task(title=title)
-    db.session.add(task)
-    db.session.commit()
-    return jsonify({"id": task.id, "title": task.title}), 201
