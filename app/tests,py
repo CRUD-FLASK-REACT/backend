@@ -1,0 +1,29 @@
+import pytest
+from app import create_app, db
+from app.models import Task, Comment
+
+@pytest.fixture
+def client():
+    app = create_app()
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        with app.app_context():
+            db.create_all()
+            task = Task(title="Test Task")
+            db.session.add(task)
+            db.session.commit()
+        yield client
+
+def test_create_comment(client):
+    rv = client.post('/tasks/1/comments', json={'text': 'New'})
+    assert rv.status_code == 201
+
+def test_edit_comment(client):
+    client.post('/tasks/1/comments', json={'text': 'EditMe'})
+    rv = client.put('/tasks/1/comments/1', json={'text': 'Edited'})
+    assert rv.status_code == 200
+
+def test_delete_comment(client):
+    client.post('/tasks/1/comments', json={'text': 'DeleteMe'})
+    rv = client.delete('/tasks/1/comments/1')
+    assert rv.status_code == 204
