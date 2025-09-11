@@ -14,8 +14,11 @@ def create_app(config_class=Config):
     CORS(app)
     
     with app.app_context():
+        print("== Importing and registering blueprint ==")
         from .routes import bp
-        app.register_blueprint(bp)  # No url_prefix means no prefix in routes
+        print("== Registering blueprint 'bp' ==")
+        app.register_blueprint(bp)  # No url_prefix means routes have no prefix
         db.create_all()
+        print("== Blueprint registered and DB created ==")
         
     return app
