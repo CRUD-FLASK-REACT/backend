@@ -62,3 +62,8 @@ def reset_tasks():
 @bp.route('/test', methods=['GET'])
 def test():
     return jsonify({'message': 'Hello, this is the /test route!'}), 200
+
+@bp.route('/')
+def index():
+    return "Backend is running"
+   
