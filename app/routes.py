@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify
 from .models import db, Task, Comment
 
 bp = Blueprint('main', __name__)
+print("### Blueprint 'bp' is being created ###")
+
 
 @bp.route('/tasks', methods=['GET'])
 def get_tasks():
