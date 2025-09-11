@@ -6,6 +6,7 @@ from config import Config
 db = SQLAlchemy()
 
 def create_app(config_class=Config):
+    print("== Flask create_app running, blueprint should be registered ==")
     app = Flask(__name__)
     app.config.from_object(config_class)
     
