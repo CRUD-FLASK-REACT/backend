@@ -62,3 +62,7 @@ def reset_tasks():
     Task.query.delete()
     db.session.commit()
     return jsonify({'status': 'ok', 'message': 'All tasks deleted.'}), 200
+
+@bp.route('/test', methods=['GET'])
+def test():
+    return jsonify({'message': 'Hello, this is the /test route!'}), 200
