@@ -1,6 +1,6 @@
-from app import create_app  # or from app import app (if no factory)
+from app import create_app
 
-app = create_app()  # or app = app
+app = create_app()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
